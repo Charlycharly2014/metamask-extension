@@ -1,6 +1,10 @@
 import { Suite } from 'mocha';
 import FixtureBuilder from '../fixture-builder';
 import {
+  waitForNotificationWindowDuringAccountCreationFlow
+} from './common';
+
+import {
   defaultGanacheOptions,
   switchToNotificationWindow,
   unlockWallet,
@@ -88,6 +92,11 @@ describe('Create Snap Account', function (this: Suite) {
           text: 'Create',
         });
 
+        // FIXME: We need to re-open the notification window, since it gets closed after
+        // the first part of the flow
+        await waitForNotificationWindowDuringAccountCreationFlow(driver);
+        await switchToNotificationWindow(driver);
+
         await driver.findElement({
           css: '[data-testid="confirmation-cancel-button"]',
           text: 'Cancel',
@@ -114,8 +123,12 @@ describe('Create Snap Account', function (this: Suite) {
         // click the create button on the confirmation modal
         await driver.clickElement('[data-testid="confirmation-submit-button"]');
 
-        // click the add account button on the naming modal
+        // FIXME: We need to re-open the notification window, since it gets closed after
+        // the first part of the flow
+        await waitForNotificationWindowDuringAccountCreationFlow(driver);
         await switchToNotificationWindow(driver);
+
+        // click the add account button on the naming modal
         await driver.clickElement(
           '[data-testid="submit-add-account-with-name"]',
         );
@@ -171,8 +184,12 @@ describe('Create Snap Account', function (this: Suite) {
         // click the create button on the confirmation modal
         await driver.clickElement('[data-testid="confirmation-submit-button"]');
 
-        // Add a custom name to the account
+        // FIXME: We need to re-open the notification window, since it gets closed after
+        // the first part of the flow
+        await waitForNotificationWindowDuringAccountCreationFlow(driver);
         await switchToNotificationWindow(driver);
+
+        // Add a custom name to the account
         const newAccountLabel = 'Custom name';
         await driver.fill('[placeholder="Snap Account 1"]', newAccountLabel);
         // click the add account button on the naming modal
@@ -258,8 +275,12 @@ describe('Create Snap Account', function (this: Suite) {
         // confirm account creation
         await driver.clickElement('[data-testid="confirmation-submit-button"]');
 
-        // click the cancel button on the naming modal
+        // FIXME: We need to re-open the notification window, since it gets closed after
+        // the first part of the flow
+        await waitForNotificationWindowDuringAccountCreationFlow(driver);
         await switchToNotificationWindow(driver);
+
+        // click the cancel button on the naming modal
         await driver.clickElement(
           '[data-testid="cancel-add-account-with-name"]',
         );
